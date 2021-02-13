@@ -36,7 +36,11 @@ function __fzf_search_current_dir --description "Search the current directory. R
             end
         end
 
-        commandline --current-token --replace -- (string escape -- $file_paths_selected | string join ' ')
+        if status is-command-substitution
+            string escape -- $file_paths_selected | string join ' '
+        else
+            commandline --current-token --replace -- $file_paths_selected
+        end
     end
 
     commandline --function repaint
